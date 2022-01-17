@@ -1,10 +1,16 @@
 const express=require('express')
 const router=express.Router();
+const passport= require('passport');
 const userController=require('../controllers/user_controller')
 const user_posts=require('../controllers/user_posts')
-router.get('/profile',userController.profile);
+router.get('/profile',passport.checkAuthentication,userController.profile);
 router.get('/posts',user_posts.posts)
 router.get('/signUp',userController.signUp);
 router.get('/signIn',userController.signIn);
 router.post('/create',userController.create);
+router.post('/create-session',passport.authenticate(
+    'local',
+    {failureRedirect:'users/signIn'}
+),userController.create_session);
+router.get('/signOut',userController.destroy_session);
 module.exports=router;
