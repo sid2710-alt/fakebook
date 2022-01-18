@@ -9,6 +9,14 @@ const passport=require('passport');
 const passportLocal=require('./config/passport-local-strategy');
 //const { disable } = require('express/lib/application');
 const MongoStore=require('connect-mongo');
+const sassMiddleware=require('node-sass-middleware');
+app.use(sassMiddleware({
+src:'./assests/scss',
+dest:'./assests/css',
+debug:true,
+outputStyle:'expanded',
+prefix:'/css'
+}));
 app.use(express.urlencoded({extended:true}));
 app.use(cookie_parser());
 app.use(expressLayouts);

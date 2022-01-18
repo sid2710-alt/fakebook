@@ -1,0 +1,30 @@
+#layout-header nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: brown;
+  padding: 0 10px;
+  margin: -7 -5px;
+  color: white;
+  box-shadow: 1px 1px 1px 1px lightgrey;
+}
+
+#layout-header nav .mini-logo p {
+  margin: 5px;
+  font-weight: bold;
+  font-size: 50px;
+}
+
+#layout-header nav .auth-links ul {
+  margin: 10% 5px;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#layout-header nav .auth-links ul li {
+  margin-right: 5px;
+}
+
+#layout-header nav a {
+  color: white;
+  text-decoration: none;
+}
