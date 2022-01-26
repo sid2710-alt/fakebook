@@ -2,23 +2,27 @@ const Post=require('../models/post')
 const Comment=require('../models/comments')
 module.exports.create=async function(req,res)
 {
-     try{
-       let post=await Post.create({
-            content:req.body.content,
-            user:req.user._id
+    try{
+        let post = await Post.create({
+            content: req.body.content,
+            user: req.user._id
         });
-        if(req.xhr)
-        {
+        
+        if (req.xhr){
+            // if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
+            post = await post.populate('user', 'name');
+
             return res.status(200).json({
-                data:{ 
-                    post:post
+                data: {
+                    post: post
                 },
-            message:"Post Created",
-        }),
-           
-        req.flash('success', 'Post published!');
+                message: "Post created!"
+            });
+        }
+         req.flash('success', 'Post published!');  
+        
         return res.redirect('back');
-    }
+    
      }
      catch(err)
      {

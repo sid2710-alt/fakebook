@@ -1,4 +1,7 @@
 const User=require('../models/user');
+const fs=require('fs');
+const path=require('path');
+
 module.exports.profile = function(req, res){
     User.findById(req.params.id,function(err,user){
         return res.render('user_profile', {
@@ -19,17 +22,58 @@ module.exports.signIn=function(req,res){
         title:'Sign In'
     })
 }
-module.exports.update=function(req,res){
+module.exports.update= async function(req,res){
+    // if(req.params.id==req.user.id)
+    // {
+    //     User.findByIdAndUpdate(req.params.id,req.body,function(err,user){
+    //         return res.redirect('back');
+    //     })
+    // }
+    // else
+    // {
+    //     return res.status(401).send('Unauthorized');
+    // }
     if(req.params.id==req.user.id)
+{
+    try
     {
-        User.findByIdAndUpdate(req.params.id,req.body,function(err,user){
+        let user=await User.findById(req.params.id);
+        User.uploadedAvatar(req,res,function(err){
+            if(err)
+            {
+                console.log('multer error',err);
+                
+            }
+            //console.log(req.file);
+            user.name=req.body.name;
+            user.email=req.body.email;
+            if(req.file)
+            {
+                
+                if(user.avatar)
+                {
+                   fs.exists(path.join(__dirname,'..',user.avatar), function (isExist) {
+                        if (isExist) {
+                          fs.unlinkSync(path.join(__dirname + '..'+user.avatar));
+                        } else {
+                         // console.log("DOES NOT exist:", path);
+                        }
+                      });
+
+                }
+                user.avatar=User.avatarPath +'/' +req.file.filename;
+            }
+            user.save();
             return res.redirect('back');
-        })
+
+        });
     }
-    else
-    {
-        return res.status(401).send('Unauthorized');
+    catch(err){
+req.flash('error',err);
+res.redirect('back');
     }
+
+}
 
 }
 module.exports.signUp=function(req,res){

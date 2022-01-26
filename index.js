@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookie_parser());
 app.use(expressLayouts);
 app.use(express.static('./assests'));
+app.use('/uploads',express.static(__dirname +'/uploads'));
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 app.set('view engine', 'ejs')
