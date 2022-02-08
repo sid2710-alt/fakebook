@@ -7,11 +7,13 @@ const db = require('./config/mongoose')
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+const passportjwt=require('./config/passport-jwt-strategy');
 //const { disable } = require('express/lib/application');
 const MongoStore = require('connect-mongo');
 const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash');
 const customMware=require('./config/middleware');
+const passportGoogle=require('./config/passport-google-oauth2-strategy')
 app.use(sassMiddleware({
     src: './assests/scss',
     dest: './assests/css',

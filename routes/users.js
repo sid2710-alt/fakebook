@@ -14,4 +14,10 @@ router.post('/create-session',passport.authenticate(
     {failureRedirect:'/users/signIn'}
 ),userController.create_session);
 router.get('/signOut',userController.destroy_session);
+router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}))
+router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/users/signIn'}),userController.create_session);
+router.get('/forget-password',userController.reset);
+router.post('/resetpass',userController.changepass);
+router.get('/reset-profile/:tid',userController.changeprofile);
+router.post('/resetpassword',userController.setpassword);
 module.exports=router;

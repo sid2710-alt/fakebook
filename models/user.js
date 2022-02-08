@@ -37,3 +37,12 @@ userSchema.statics.uploadedAvatar=multer({storage:storage}).single('avatar');
 userSchema.statics.avatarPath=AVATAR_PATH;
  const User=mongoose.model('User',userSchema);
  module.exports=User;
+
+//  let storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, path.join(__dirname, "..", FILES_PATH));
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.fieldname + '-' + Date.now());
+//     }
+//   });

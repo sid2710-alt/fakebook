@@ -1,6 +1,10 @@
 const User=require('../models/user');
 const fs=require('fs');
 const path=require('path');
+const crypto=require('crypto');
+const Token=require('../models/token');
+const reset_mailer=require('../mailers/password_mailer');
+const mongoose=require('mongoose')
 
 module.exports.profile = function(req, res){
     User.findById(req.params.id,function(err,user){
@@ -123,4 +127,45 @@ module.exports.destroy_session=function(req,res){
     req.logout();
     req.flash('success','Logged out Successfully') 
     return res.redirect('/');
+}
+module.exports.reset=function(req,res){
+    return res.render('forget-password',{
+        title:'Change Password',
+    })
+}
+module.exports.changepass=async function(req,res){
+ let user=await User.findOne({email:req.body.email});
+ //console.log(user);
+ let token=await Token.create({
+       code:crypto.randomBytes(20).toString('hex'),
+       user:user,
+       isValid:true
+    })
+    //console.log(token);
+    //console.log('&&&&&&&&',token.user.email);
+reset_mailer.resetPassword(token);
+return res.redirect('/');
+    
+} 
+module.exports.changeprofile= async function(req,res){
+    //var id =await mongoose. Types. ObjectId(req.params.id);
+    console.log(req.params.tid)
+    let token=await Token.findById(req.params.tid);
+    console.log('*****',token)
+    if(!token.isValid)
+    {
+        return res.redirect('/');
+    }
+    token.isValid=false;
+    token.save();
+return res.render('changeprofile',{
+    user:token.user,
+    title:'change here'
+})
+}
+module.exports.setpassword=async function(req,res){
+let user= await User.findById(req.body.user);
+user.password=req.body.password;
+await user.save();
+return res.redirect('/');
 }
