@@ -6,10 +6,24 @@
         width:70%;
         padding:10px;
     }
-    #user-friends{
+    .extra{
+        
         width:30%;
         padding:10px;
         border-left: 1px solid grey;
+        display: flex;
+        flex-direction: column;
+        #user-friends{
+           // max-height: 50%;
+            overflow-y:scroll;
+            min-height:50%;
+           
+        }
+        #people{
+           // max-height: 50%;
+            overflow-y:scroll;
+            min-height:50%;
+        }
        // height:100%;
     }
 }

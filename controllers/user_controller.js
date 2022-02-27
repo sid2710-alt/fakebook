@@ -6,11 +6,13 @@ const Token=require('../models/token');
 const reset_mailer=require('../mailers/password_mailer');
 const mongoose=require('mongoose')
 
-module.exports.profile = function(req, res){
+module.exports.profile =async function(req, res){
+    let populated_user = await User.findById(req.user).populate('friendships'); 
     User.findById(req.params.id,function(err,user){
         return res.render('user_profile', {
             title: 'User Profile',
             profile_user:user,
+            populated_user,
             }
         )
 

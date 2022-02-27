@@ -9,8 +9,20 @@
   padding: 10px;
 }
 
-#home-container #user-friends {
+#home-container .extra {
   width: 30%;
   padding: 10px;
   border-left: 1px solid grey;
+  display: flex;
+  flex-direction: column;
+}
+
+#home-container .extra #user-friends {
+  overflow-y: scroll;
+  min-height: 50%;
+}
+
+#home-container .extra #people {
+  overflow-y: scroll;
+  min-height: 50%;
 }
