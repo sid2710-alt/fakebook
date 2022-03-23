@@ -3,6 +3,7 @@ const router=express.Router();
 const passport= require('passport');
 const userController=require('../controllers/user_controller')
 const user_posts=require('../controllers/user_posts')
+const friend=require('../controllers/friendship_controller');
 router.get('/profile/:id',passport.checkAuthentication,userController.profile);
 router.post('/update/:id',passport.checkAuthentication,userController.update);
 router.get('/posts',user_posts.posts)
@@ -20,4 +21,5 @@ router.get('/forget-password',userController.reset);
 router.post('/resetpass',userController.changepass);
 router.get('/reset-profile/:tid',userController.changeprofile);
 router.post('/resetpassword',userController.setpassword);
+router.post('/friendships',friend.make_friend);
 module.exports=router;

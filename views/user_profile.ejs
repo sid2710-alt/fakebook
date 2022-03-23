@@ -1,20 +1,38 @@
-<link rel="stylesheet" href="/css/user_profile.css">
-<img src="<%=user.avatar%>" alt= "<%=user.name%>" width=100>
+<link rel="stylesheet" href="/css/user_profile.css>
 
-        
-        
 
-        <%if(user.id==profile_user.id) {%>
-            <form action="/users/update/<%=user.id%>" method="POST" enctype="multipart/form-data" >
-                <input type="text" name="name" placeholder="Your Name" value="<%user.name%>" required>
-                <input type="text" name="email" placeholder="Your Email" value="<%user.email%>" required>
-                 <input type="file" name="avatar" placeholder="Profile Picture">
-                <input type="submit" value="update">
-                
-            </form>
 
-            <%}else {%>
-                <p><%=profile_user.name %></p>
-                <p><%=profile_user.email %></p>
-            
-            <%}%>
+
+
+<%if(user.id==profile_user.id) {%>
+    <img src="<%=user.avatar%>" alt="<%=user.name%>" width=100>
+    <form action="/users/update/<%=user.id%>" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Your Name" value="<%user.name%>" required>
+        <input type="text" name="email" placeholder="Your Email" value="<%user.email%>" required>
+        <input type="file" name="avatar" placeholder="Profile Picture">
+        <input type="submit" value="update">
+
+    </form>
+
+    <%}else {%>
+        <p>
+            <%=profile_user.name %>
+        </p>
+        <p>
+            <%=profile_user.email %>
+        </p>
+        <% let isFriend=false %>
+            <% for(let friend of locals.populated_user.friendships){ %>
+
+                <% if(friend.to_user==profile_user.id || friend.from_user==profile_user.id){ %>
+                    <% isFriend=true %>
+                        <% } %>
+                            <% } %>
+                                <form action="/users/friendships/?id=<%=profile_user._id%>" method="POST">
+                                    <%if(!isFriend) {%>
+                                        <input type="submit" value="Add Friend">
+                                        <%} else {%>
+                                            <input type="submit" value="Remove Friend">
+                                            <%}%>
+                                </form>
+                                <%}%>

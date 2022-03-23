@@ -16,26 +16,72 @@
     </ul>
     </div>
     </section> 
-    <section id="user-friends">
-      <h4>
-        Friends
-      </h4>
-      <%for(u of all_users) {%>
-        <p>
-          <a href="/users/profile/<%=u.id%>"><%=u.name%></a>
-        </p>
-        <%}%>
-     
-    </section>
+    <section class="extra">
+      <section id="user-friends">
+        <h4>
+          Friends
+        </h4>
+        <section id="friends">
+          <%if(locals.user){%>
+            <% if(locals.user.friendships.length == 0) {%>
+              <div class="no-friends">No friends found!</div>
+              <% }else{ %> <% for(friends of locals.user.friendships){ %> <%
+                
+              if(friends.from_user.id == locals.user.id ) {%>
+              <div>
+                <a class="friends-item" href="/users/profile?id=<%=friends.to_user._id%>">
+                  <div class="friends-name"><%= friends.to_user.name %></div>
+                </a>
+              </div>
+              <%}%> <% if(friends.to_user.id == locals.user.id) {%>
+              <div>
+                <a class="friends-item" href="/users/profile?id=<%=friends.from_user._id%>">
+                 
+                  <div class="friends-name"><%= friends.from_user.name %></div>
+                </a>
+              </div>
+              <% } %> <% } %> <% } %>
+           
+            <%}%>
+
+ 
+        </section>
+      </section>
+      <section id="PeopleYouKnow">
+        <h4>
+          People You May Know
+        </h4>
+        <section id="people">
+          <%for(u of all_users) {%>
+            <p>
+              <a href="/users/profile/<%=u.id%>"><%=u.name%></a>
+            </p>
+            <%}%>
+        </section>
+       
+       
+      </section>
     
+    </section>
+  
+    <%- include('chat_box') -%> 
               
 </div>
-<script src="/js/home_posts.js"></script>
-<script src="js/post_comments.js"></script>
-<script src="js/toggle_likes.js"></script>
+<script src= "js/home_posts.js"></script>
+<script src= "js/post_comments.js"></script>
+<script src= "js/toggle_likes.js"></script>
 <script>
   $(' .toggle-like-button').each(function(){
     let self=this;
     let toggleLike=new ToggleLike(self);
   });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha512-59oxERSDGj1eMzmFW3acSaBHEMNi2GaeQC7nQYcTqM0vgcnavi4BpUhLkcJQE2G6fdtn8JVj7brt0EZuBV0ogQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</script>
+<script src= "js/chat_engine.js"></script>
+  </script>
+  <%if(locals.user){%>
+  <script>
+    new ChatEngine('user-chat-box','<%= locals.user.email%>')
+  </script>
+<%}%> 
